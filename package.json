@@ -1,0 +1,21 @@
+{
+  "name": "ikun",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:mac": "pkg -o drivers-don_t-need-women -t macos ./index.js",
+    "build:linux": "pkg -o drivers-don_t-need-women -t linux ./index.js",
+    "build:windows": "pkg -o drivers-don_t-need-women -t windows ./index.js",
+    "mac-run": "open ./drivers-don_t-need-women"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "jimp": "^0.16.2",
+    "sharp": "^0.31.1",
+    "shelljs": "^0.8.5"
+  }
+}
