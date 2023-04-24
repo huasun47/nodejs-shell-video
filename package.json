@@ -8,7 +8,8 @@
     "build:mac": "pkg -o drivers-don_t-need-women -t macos ./index.js",
     "build:linux": "pkg -o drivers-don_t-need-women -t linux ./index.js",
     "build:windows": "pkg -o drivers-don_t-need-women -t windows ./index.js",
-    "mac-run": "open ./drivers-don_t-need-women"
+    "mac-run": "open ./drivers-don_t-need-women",
+    "split": "ffmpeg -i ./assets/60f1bcc6321e9fda43c173c84b0391.mp4 -r 15  ./assets/images/%d.png"
   },
   "keywords": [],
   "author": "",
