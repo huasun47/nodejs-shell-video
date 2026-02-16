@@ -1,18 +1,13 @@
 {
-  "name": "ikun",
+  "name": "nodejs-shell-video",
   "version": "1.0.0",
-  "description": "",
+  "description": "命令行动画 Nodejs 版",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build:mac": "pkg -o drivers-don_t-need-women -t macos ./index.js",
-    "build:linux": "pkg -o drivers-don_t-need-women -t linux ./index.js",
-    "build:windows": "pkg -o drivers-don_t-need-women -t windows ./index.js",
-    "mac-run": "open ./drivers-don_t-need-women",
-    "split": "ffmpeg -i ./assets/60f1bcc6321e9fda43c173c84b0391.mp4 -r 15  ./assets/images/%d.png"
+    "run": "node index.js",
+    "split": "ffmpeg -i ./assets/60f1bcc6321e9fda43c173c84b0391.mp4 -r 15 ./assets/images/%d.png"
   },
-  "keywords": [],
-  "author": "",
+  "author": "huasan47",
   "license": "ISC",
   "dependencies": {
     "jimp": "^0.16.2",

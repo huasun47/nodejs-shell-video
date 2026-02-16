@@ -1,13 +1,14 @@
 const fs = require("fs")
-const { join, extname } = require("path")
+const { resolve, extname } = require("path")
 const { read, intToRGBA } = require("jimp")
 const { echo, exit } = require("shelljs")
+const scaleConfig = require("./scale-config")
 
-const floder = join(__dirname, './assets/images/')
+const floder = resolve(__dirname, './assets/images/')
 
 // 如果画面对比度叫高，推荐使用 const charts = `#####   `
 // 构成字符： 颜色由 深到浅, 也可以增加符号
-const charts = `@&$%=+!^*~- `
+const charts = `@&$%=+!^*~-`
 
 const maxIndex = charts.length - 1
 const limitIndex = (num) => (num > maxIndex ? maxIndex : num)
@@ -15,10 +16,9 @@ const limitIndex = (num) => (num > maxIndex ? maxIndex : num)
 fs.readdir(floder, undefined, (err, data) => {
   if (err) throw err
 
-  // 6. 过滤非 png 并排序
-  const files = data.filter((url) => extname(url) === ".png")
-  files.sort((a, b) => parseInt(a) - parseInt(b))
-
+  // 6. 过滤非 png/jpg 并排序
+  const files = data.filter((url) => extname(url) === ".png" || extname(url) === ".jpg")
+  files.sort((a, b) => a.localeCompare(b))
   // 7. 递归播放
   play(files)
 })
@@ -26,33 +26,32 @@ fs.readdir(floder, undefined, (err, data) => {
 const play = (files) => {
   const printFileName = files.shift()
 
-  print(printFileName)
-
-  if (files.length) {
-    setTimeout(() => {
-      play(files)
-      // ps: 在 js 中 时间函数不可使用 小数 或 负数，否则会立即执行
-    }, parseInt(1000 / 15)) // 15 取决于 ffmpeg 分割的帧数
-
-    return
-  }
-  exit(1)
+  print(printFileName).then(() => {
+    if (files.length) {
+      setTimeout(() => {
+        play(files)
+        // ps: 在 js 中 时间函数不可使用 小数 或 负数，否则会立即执行
+      }, parseInt(1000 / 15)) // 15 取决于 ffmpeg 分割的帧数
+    } else {
+      exit(1)
+    }
+  })
 }
 
 const print = (fileName) => {
   let subCharts = ""
 
   // 1. 读取图片
-  const fileURL = join(floder, fileName)
+  const fileURL = resolve(floder, fileName)
 
-  read(fileURL).then((image) => {
+  return read(fileURL).then((image) => {
     // 2 获取宽高 ps: 方法不可结构，会报错
     const width = image.getWidth()
     const height = image.getHeight()
 
     // 6. 调整合适的缩放比例 很重要
-    const xScale = width / 220
-    const yScale = height / 40
+    const xScale = width / scaleConfig.MOM.width
+    const yScale = height / scaleConfig.MOM.height
 
     for (let y = 0; y < height; y += yScale) {
       for (let x = 0; x < width; x += xScale) {
